@@ -4,6 +4,7 @@ int get_char_to_int(void);
 void print_num(long long n);
 
 char memory[65536];
+char data[256 * 1024];
 
 int main(void)
 {
@@ -12,6 +13,8 @@ int main(void)
 
     number = 0;
     sum = 0;
+
+    setbuf(stdin, NULL);
 
     number = get_char_to_int();
 
@@ -25,6 +28,7 @@ int main(void)
     {
         sum += i;
         memory[i % 65536] = i % 256;
+        data[i % (256*1024)] = (sum + i) % 256;
     }
 
     print_num(sum);
