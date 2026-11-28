@@ -1,4 +1,9 @@
 #include <stdio.h>
+#define MEMORY_SIZE 65536
+#define DATA_SIZE 256 * 1024
+#define CPU_MODEL_SIZE 64
+#define BUF_SIZE 32
+#define CIPHER_BUF_SIZE 32
 
 int get_char_to_int(void);
 void print_num(long long n);
@@ -9,11 +14,11 @@ int cipher(char *cpu_model, char *sum_s, char *cipher);
 long long sum_loop(char *memory, char *data, int n);
 void example();
 
-char memory[65536];
-char data[256 * 1024];
-char cpu_model[64];
-char buff[32];
-char cipher_buff[32];
+char memory[MEMORY_SIZE];
+char data[DATA_SIZE];
+char cpu_model[CPU_MODEL_SIZE];
+char buf[BUF_SIZE];
+char cipher_buf[CIPHER_BUF_SIZE];
 
 int main(void)
 {
@@ -41,13 +46,13 @@ int main(void)
     my_print(cpu_model);
     putchar('\n');
 
-    ull_to_str(buff, sum);
+    ull_to_str(buf, sum);
 
-    status = cipher(cpu_model, buff, cipher_buff);
+    status = cipher(cpu_model, buf, cipher_buf);
     if (status != -1)
     {
         my_print("cipher: ");
-        my_print(cipher_buff);
+        my_print(cipher_buf);
         putchar('\n');
     }
 
@@ -150,9 +155,9 @@ int my_print(char *s)
     return count;
 }
 
-int ull_to_str(char *buff, unsigned long long sum)
+int ull_to_str(char *buf, unsigned long long sum)
 {
-    if (buff == NULL) return -1;
+    if (buf == NULL) return -1;
 
     char tmp[32];
 
@@ -169,27 +174,27 @@ int ull_to_str(char *buff, unsigned long long sum)
     int j = 0;
     for (int k = i -1; k >= 0; k--)
     {
-        buff[j] = tmp[k];
+        buf[j] = tmp[k];
         j++;
     }
-    buff[j] = '\0';
+    buf[j] = '\0';
 
     return 0;
 }
 
-int cipher(char *cpu_model, char *sum_s, char *buff)
+int cipher(char *cpu_model, char *sum_s, char *buf)
 {
-    if (cpu_model == NULL || sum_s == NULL || buff == NULL) return -1;
+    if (cpu_model == NULL || sum_s == NULL || buf == NULL) return -1;
     
     int i;
     i = 0;
 
     while (sum_s[i] != '\0' && cpu_model[i] != '\0')
     {
-        buff[i] = (((sum_s[i] - '0') + cpu_model[i]) % 10) + '0';
+        buf[i] = (((sum_s[i] - '0') + cpu_model[i]) % 10) + '0';
         i++;
     }
-    buff[i] = '\0';
+    buf[i] = '\0';
     
     return 0;
 }
